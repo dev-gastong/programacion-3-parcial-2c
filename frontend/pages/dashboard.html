@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de administración | Gestión de Turnos</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+
+
+    <div class="dashboard">
+
+
+        <aside class="sidebar">
+            <h2>Gestión de Turnos</h2>
+
+
+            <nav>
+                <a href="dashboard.html" class="activo">Inicio</a>
+                <a href="#turnos">Turnos</a>
+                <button id="cerrarSesion" type="button">
+                    Cerrar sesión
+                </button>
+            </nav>
+        </aside>
+
+
+        <main class="contenido">
+            <header class="encabezado">
+                <h1>Panel principal</h1>
+                <p id="datosUsuario">Cargando usuario...</p>
+            </header>
+
+
+            <!-- SECCIÓN ADMIN (rol 1) -->
+            <section id="seccion-admin" style="display:none;">
+                <h2>Gestión de turnos</h2>
+                <button id="obtenerTurnos" type="button">Obtener turnos</button>
+                <div id="datosTurnos"></div>
+            </section>
+
+
+            <!-- SECCIÓN MÉDICO (rol 2) -->
+            <section id="seccion-medico" style="display:none;">
+                <h2>Tus turnos asignados</h2>
+                <p>Esta sección mostrará los turnos en los que figurás como médico confirmador.</p>
+            </section>
+
+
+            <!-- SECCIÓN PACIENTE (rol 3) -->
+            <section id="seccion-paciente" style="display:none;">
+
+                <h2>Sacar un turno</h2>
+                <form id="formNuevoTurno">
+                    <label for="fecha_turno">Fecha del turno</label>
+                    <input type="date" id="fecha_turno" name="fecha_turno" required>
+
+                    <label for="hora_turno">Hora del turno</label>
+                    <input type="time" id="hora_turno" name="hora_turno" required>
+
+                    <label for="medio_solicitado">Medio de solicitud</label>
+                    <select id="medio_solicitado" name="medio_solicitado" required>
+                        <option value="">Seleccioná un medio</option>
+                        <option value="Teléfono">Teléfono</option>
+                        <option value="Web">Web</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                    </select>
+
+                    <label for="dni_paciente">DNI del paciente</label>
+                    <input type="text" id="dni_paciente" name="dni_paciente" required>
+
+                    <label for="id_practica">ID de práctica</label>
+                    <input type="number" id="id_practica" name="id_practica" required>
+
+                    <label for="id_equipo">ID de equipo</label>
+                    <input type="number" id="id_equipo" name="id_equipo" required>
+
+                    <button type="submit">Solicitar turno</button>
+                </form>
+                <p id="mensajeNuevoTurno"></p>
+
+
+                <hr>
+
+
+                <h2>Cancelar un turno</h2>
+                <form id="formCancelarTurno">
+                    <label for="id_turno_cancelar">Número de turno a cancelar</label>
+                    <input type="number" id="id_turno_cancelar" name="id_turno_cancelar" required>
+                    <button type="submit">Cancelar turno</button>
+                </form>
+                <p id="mensajeCancelarTurno"></p>
+
+            </section>
+        </main>
+
+
+    </div>
+
+
+    <script src="../js/api.js"></script>
+    <script src="../js/dashboard.js"></script>
+
+
+</body>
+</html>
