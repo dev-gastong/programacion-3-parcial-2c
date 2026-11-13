@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de administración | Gestión de Turnos</title>
+    <title>Panel de usuario | Gestión de Turnos</title>
     <link rel="stylesheet" href="../css/estilos.css">
 </head>
 <body>
@@ -44,7 +44,9 @@
             <!-- SECCIÓN MÉDICO (rol 2) -->
             <section id="seccion-medico" style="display:none;">
                 <h2>Tus turnos asignados</h2>
-                <p>Esta sección mostrará los turnos en los que figurás como médico confirmador.</p>
+                <div id="turnosMedico" role="status" aria-live="polite">
+                    Cargando turnos...
+                </div>
             </section>
 
 
@@ -66,6 +68,22 @@
                         <option value="Web">Web</option>
                         <option value="WhatsApp">WhatsApp</option>
                     </select>
+
+                    <label for="medico_confirmacion">Médico confirmador (opcional)</label>
+                    <select id="medico_confirmacion" name="medico_confirmacion">
+                        <option value="">Sin asignar</option>
+                        <option value="1001">Matrícula 1001</option>
+                        <option value="1003">Matrícula 1003</option>
+                        <option value="1005">Matrícula 1005</option>
+                        <option value="1007">Matrícula 1007</option>
+                        <option value="1009">Matrícula 1009</option>
+                        <option value="1011">Matrícula 1011</option>
+                        <option value="1013">Matrícula 1013</option>
+                        <option value="1015">Matrícula 1015</option>
+                    </select>
+
+                    <label for="id_disponibilidad">ID de disponibilidad (opcional)</label>
+                    <input type="number" id="id_disponibilidad" name="id_disponibilidad" min="1">
 
                     <label for="dni_paciente">DNI del paciente</label>
                     <input type="text" id="dni_paciente" name="dni_paciente" required>

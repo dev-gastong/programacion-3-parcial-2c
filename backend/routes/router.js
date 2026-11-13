@@ -15,8 +15,9 @@ router.use(verificarToken);
 // RUTAS DE ADMINISTRADOR (rol 1)
 // ==============================
 router.get('/', autorizarRol(1), turnoController.obtenerTurnos);
+router.get('/medico', autorizarRol(2), turnoController.obtenerTurnosMedico);
 router.get('/:id', autorizarRol(1), turnoController.obtenerTurnosId);
-router.post('/', autorizarRol(1), validarEstadoTurno, turnoController.crearTurno);
+router.post('/', autorizarRol(1, 3), validarEstadoTurno, turnoController.crearTurno);
 
 
 // ==============================

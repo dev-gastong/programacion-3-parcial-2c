@@ -1,7 +1,7 @@
 const db = require('../config/database');
 const bcrypt = require('bcryptjs');
 const { crearTokenCuenta } = require('../services/tokenService');
-const { enviarCorreo } = require('../services/emailService');
+const { enviarCorreo } = require('../services/mailService');
 
 
 // URL base del frontend. Se puede configurar en el archivo .env.

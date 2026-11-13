@@ -29,6 +29,7 @@ if (rol === 1) {
     iniciarAdmin();
 } else if (rol === 2) {
     seccionMedico.style.display = 'block';
+    iniciarMedico();
 } else if (rol === 3) {
     seccionPaciente.style.display = 'block';
     iniciarPaciente();
@@ -106,6 +107,76 @@ function iniciarAdmin() {
     });
 }
 
+async function iniciarMedico() {
+    const contenedorTurnos = document.getElementById('turnosMedico');
+
+    try {
+        const respuesta = await fetch('http://localhost:3000/api/turnos/medico', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const turnos = await respuesta.json();
+
+        if (!respuesta.ok) {
+            throw new Error(turnos.error || 'No se pudieron cargar los turnos');
+        }
+
+        contenedorTurnos.replaceChildren();
+
+        if (turnos.length === 0) {
+            contenedorTurnos.textContent = 'No tenés turnos asignados.';
+            return;
+        }
+
+        const grid = document.createElement('div');
+        grid.className = 'grid-turnos';
+
+        turnos.forEach(turno => {
+            const tarjeta = document.createElement('article');
+            tarjeta.className = 'tarjeta-turno';
+
+            const encabezado = document.createElement('div');
+            encabezado.className = 'turno-header';
+
+            const id = document.createElement('span');
+            id.className = 'turno-id';
+            id.textContent = `Turno #${turno.id_turno}`;
+
+            const estado = document.createElement('span');
+            estado.className = 'badge';
+            estado.textContent = turno.estado_turno || 'Pendiente';
+            encabezado.append(id, estado);
+
+            const detalles = document.createElement('div');
+            detalles.className = 'turno-body';
+
+            [
+                ['Fecha', turno.fecha_turno],
+                ['Hora', turno.hora_turno],
+                ['DNI paciente', turno.dni_paciente],
+                ['Práctica', turno.id_practica],
+                ['Equipo', turno.id_equipo],
+                ['Disponibilidad', turno.id_disponibilidad]
+            ].forEach(([etiqueta, valor]) => {
+                const dato = document.createElement('p');
+                const nombre = document.createElement('strong');
+                nombre.textContent = `${etiqueta}: `;
+                dato.append(nombre, document.createTextNode(valor ?? 'No especificado'));
+                detalles.appendChild(dato);
+            });
+
+            tarjeta.append(encabezado, detalles);
+            grid.appendChild(tarjeta);
+        });
+
+        contenedorTurnos.appendChild(grid);
+    } catch (error) {
+        console.error('Error al obtener turnos del médico:', error);
+        contenedorTurnos.textContent = error.message || 'Error al cargar los turnos.';
+    }
+}
+
 
 // ==============================
 // PACIENTE — NUEVO TURNO Y CANCELAR
@@ -121,17 +192,20 @@ function iniciarPaciente() {
 
         mensajeNuevoTurno.textContent = '';
 
+        const medicoConfirmacion = document.getElementById('medico_confirmacion').value;
+        const idDisponibilidad = document.getElementById('id_disponibilidad').value;
+
         const body = {
             fecha_turno:       document.getElementById('fecha_turno').value,
             hora_turno:        document.getElementById('hora_turno').value,
             medio_solicitado:  document.getElementById('medio_solicitado').value,
             estado_turno:      'Reservado',
             fecha_confirmacion: document.getElementById('fecha_turno').value,
-            medico_confirmacion: null,
+            medico_confirmacion: medicoConfirmacion === '' ? null : Number(medicoConfirmacion),
             dni_paciente:      document.getElementById('dni_paciente').value,
             id_practica:       Number(document.getElementById('id_practica').value),
             id_equipo:         Number(document.getElementById('id_equipo').value),
-            id_disponibilidad: null
+            id_disponibilidad: idDisponibilidad === '' ? null : Number(idDisponibilidad)
         };
 
         try {

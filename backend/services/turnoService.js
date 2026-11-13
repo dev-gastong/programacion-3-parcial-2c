@@ -20,6 +20,17 @@ async function obtenerPorId(id) {
     return turnos;
 }
 
+async function obtenerPorMedico(matricula) {
+    const [turnos] = await db.execute(`
+            SELECT *
+            FROM turno
+            WHERE medico_confirmacion = ?
+            ORDER BY fecha_turno, hora_turno
+        `, [matricula]);
+
+    return turnos;
+}
+
 async function crearTurno(turno) {
 
     const {
@@ -92,6 +103,7 @@ async function cancelarTurno(id) {
 module.exports = {
     obtenerTodos,
     obtenerPorId,
+    obtenerPorMedico,
     crearTurno,
     cancelarTurno
 };
